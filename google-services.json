@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "156023984055",
+    "project_id": "angkot-in",
+    "storage_bucket": "angkot-in.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:156023984055:android:b44e901a35f159b6846232",
+        "android_client_info": {
+          "package_name": "com.ppam.angkotIn"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwYIKvcU53E_gatRirv1d2gFhi2YD8-Es"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
