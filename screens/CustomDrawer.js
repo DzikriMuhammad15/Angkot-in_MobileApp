@@ -77,8 +77,8 @@ const CustomDrawer = ({ navigation, isDrawerOpen, toggleDrawer }) => {
     >
       <TouchableOpacity style={styles.overlay} onPress={toggleDrawer} />
       <View style={styles.drawerContent}>
-        <View className="bg-[#FBCC4B]">
-          <View style={styles.userInfoSection}>
+        <View className="bg-[#FBCC4B] flex  justify-center items-center gap-x-2">
+          <View style={styles.userInfoSection} className="w-[90%] ">
             <FontAwesome name="user-circle" size={48} color="black" />
             <Text style={styles.title}>{username}</Text>
           </View>
@@ -175,12 +175,11 @@ const styles = StyleSheet.create({
   },
   userInfoSection: {
     flexDirection: "row",
-
     paddingTop: 30,
     paddingBottom: 20,
     alignItems: "center",
     justifyContent: "center",
-    borderBottomWidth: 1,
+    borderBottomWidth: 2,
     borderBottomColor: "#000000",
   },
   title: {
