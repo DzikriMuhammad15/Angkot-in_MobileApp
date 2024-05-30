@@ -25,17 +25,28 @@ export default function App() {
 
   async function authCheck() {
     try {
-      const currentUser = JSON.parse(await AsyncStorage.getItem("currentUser"));
-      console.log("current user: ", currentUser);
-      if (currentUser.email) {
-        console.log(currentUser);
-        setIsLogin(true);
-      } else {
+      const currentUserString = await AsyncStorage.getItem("currentUser");
+      if (currentUserString) {
+        const currentUser = JSON.parse(currentUserString);
+        if (currentUser.email) {
+          console.log(currentUser);
+          setIsLogin(true);
+        } else {
+          setIsLogin(false);
+          await initUser();
+        }
+      }
+      else {
         setIsLogin(false);
+        await initUser();
       }
     } catch (err) {
       console.log(err)
     }
+  }
+
+  async function initUser() {
+    await AsyncStorage.setItem("createUser", JSON.stringify({}));
   }
 
   useEffect(() => {
