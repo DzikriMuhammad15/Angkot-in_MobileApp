@@ -15,6 +15,7 @@ const screenHeight = Dimensions.get("screen").height;
 const screenWidth = Dimensions.get("screen").width;
 
 export default function MapScreen({ navigation }) {
+  const [isLoading, setIsLoading] = useState(true)
   const [mapRegion, setMapRegion] = useState({
     latitude: 37.78825,
     longitude: -122.4324,
@@ -43,6 +44,7 @@ export default function MapScreen({ navigation }) {
       await setMapRegionLocation();
     };
     fetchMapRegion();
+    setIsLoading(false)
   }, []);
 
   if (loading) {

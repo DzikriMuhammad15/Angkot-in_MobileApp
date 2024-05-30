@@ -17,6 +17,8 @@ const { app } = require("../firebaseConfig");
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const auth = getAuth(app);
+import { getFirestore, collection, query, where, getDocs, limit, getDoc } from "firebase/firestore";
+const { db } = require("../firebaseConfig");
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
@@ -25,17 +27,28 @@ export default function LoginScreen({ navigation }) {
   const [showHidePasswordText, setShowHidePasswordText] = useState("SHOW");
   const [error, setError] = useState("");
 
+
   const handleLogin = async () => {
     try {
       // todo cek dulu email sama passwordnya
       // todo cek emailnya tedaftar atau tidak
 
       const cred = await signInWithEmailAndPassword(auth, email, password);
-      console.log(cred);
-      await AsyncStorage.setItem("currentUser", JSON.stringify(cred.user));
+      // ambil data firestore yg emailnya sesuai dan jadikan currentUser
+      const colref = collection(db, "users");
+      const q = query(colref, where("email", "==", email), limit(1));
+      const querySnapshot = await getDocs(q);
+      console.log(querySnapshot.empty);
+      if (!querySnapshot.empty) {
+        querySnapshot.forEach(async (doc) => {
+          await AsyncStorage.setItem("currentUser", JSON.stringify(doc.data()));
+        })
+      }
+      console.log(await AsyncStorage.getItem("currentUser"));
       await AsyncStorage.setItem("token", JSON.stringify(cred._tokenResponse));
       navigation.replace("home1");
     } catch (err) {
+      console.log(err.message);
       if ((err.code = "auth/invalid-credential")) {
         setError("Email or password invalid");
       } else {

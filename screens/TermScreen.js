@@ -39,7 +39,7 @@ export default function TermScreen({ navigation }) {
     const password = await AsyncStorage.getItem("createUserPassword");
     const cred = await createUserWithEmailAndPassword(auth, email, password);
     console.log(cred.user);
-    await AsyncStorage.setItem("currentUser", JSON.stringify(cred.user));
+    await AsyncStorage.setItem("currentUser", await AsyncStorage.getItem("createUser"));
     await AsyncStorage.setItem("token", JSON.stringify(cred._tokenResponse));
     navigation.replace("paymentMethodScreen");
   };

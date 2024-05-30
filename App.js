@@ -25,30 +25,33 @@ export default function App() {
 
   async function authCheck() {
     try {
-      const currentUser = await AsyncStorage.getItem("currentUser");
-      if (currentUser) {
+      const currentUser = JSON.parse(await AsyncStorage.getItem("currentUser"));
+      console.log("current user: ", currentUser);
+      if (currentUser.email) {
+        console.log(currentUser);
         setIsLogin(true);
       } else {
         setIsLogin(false);
       }
     } catch (err) {
-      console.log(err);
+      console.log(err)
     }
   }
 
   useEffect(() => {
     authCheck();
-    console.log(isLogin);
+    console.log("isLogin: ", isLogin);
   }, []);
 
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {isLogin ? (
-          <Stack.Screen name="DrawerNavigator" component={DrawerNavigator} />
+          <Stack.Screen name="DrawerNavigator1" component={DrawerNavigator} />
         ) : (
           <Stack.Screen name="Login" component={LoginScreen} />
         )}
+        <Stack.Screen name="DrawerNavigator" component={DrawerNavigator} />
         <Stack.Screen
           name="home1"
           component={Home}

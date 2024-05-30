@@ -16,6 +16,7 @@ const { width } = Dimensions.get("screen");
 const CustomDrawer = ({ navigation, isDrawerOpen, toggleDrawer }) => {
   const [username, setUsername] = useState("");
   const [animation] = useState(new Animated.Value(-width));
+  const [isLoading, setIsloading] = useState(true)
 
   useEffect(() => {
     const getUserData = async () => {
@@ -25,6 +26,7 @@ const CustomDrawer = ({ navigation, isDrawerOpen, toggleDrawer }) => {
           const parsedUser = JSON.parse(user);
           setUsername(`${parsedUser.firstName} ${parsedUser.lastName}`);
         }
+        setIsloading(false)
       } catch (err) {
         console.log(err);
       }
@@ -66,87 +68,89 @@ const CustomDrawer = ({ navigation, isDrawerOpen, toggleDrawer }) => {
     toggleDrawer();
     navigation.navigate(screen);
   };
+  if (!isLoading) {
 
-  return (
-    <Animated.View
-      style={[
-        styles.drawerContainer,
-        { transform: [{ translateX: animation }] },
-      ]}
-      {...panResponder.panHandlers}
-    >
-      <TouchableOpacity style={styles.overlay} onPress={toggleDrawer} />
-      <View style={styles.drawerContent}>
-        <View className="bg-[#FBCC4B] flex  justify-center items-center gap-x-2">
-          <View style={styles.userInfoSection} className="w-[90%] ">
-            <FontAwesome name="user-circle" size={48} color="black" />
-            <Text style={styles.title}>{username}</Text>
-          </View>
-          <TouchableOpacity
-            style={styles.customDrawerItem}
-            onPress={() =>
-              navigation.navigate("DrawerNavigator", { screen: "Messages" })
-            }
-          >
-            <View style={styles.customDrawerItemContent}>
-              <View className="flex flex-row items-center justify-between gap-x-2">
-                <Text style={styles.customDrawerItemLabel}>Messages</Text>
-                <FontAwesome
-                  name="circle"
-                  size={8}
-                  color="blue"
-                  style={styles.dotIcon}
-                />
-              </View>
-
-              <FontAwesome name="chevron-right" size={16} color="white" />
+    return (
+      <Animated.View
+        style={[
+          styles.drawerContainer,
+          { transform: [{ translateX: animation }] },
+        ]}
+        {...panResponder.panHandlers}
+      >
+        <TouchableOpacity style={styles.overlay} onPress={toggleDrawer} />
+        <View style={styles.drawerContent}>
+          <View className="bg-[#FBCC4B] flex  justify-center items-center gap-x-2">
+            <View style={styles.userInfoSection} className="w-[90%] ">
+              <FontAwesome name="user-circle" size={48} color="black" />
+              <Text style={styles.title}>{username}</Text>
             </View>
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity
+              style={styles.customDrawerItem}
+              onPress={() =>
+                navigation.navigate("DrawerNavigator", { screen: "Messages" })
+              }
+            >
+              <View style={styles.customDrawerItemContent}>
+                <View className="flex flex-row items-center justify-between gap-x-2">
+                  <Text style={styles.customDrawerItemLabel}>Messages</Text>
+                  <FontAwesome
+                    name="circle"
+                    size={8}
+                    color="blue"
+                    style={styles.dotIcon}
+                  />
+                </View>
 
-        <View style={styles.drawerSection}>
-          <TouchableOpacity
-            style={styles.drawerItem}
-            onPress={() =>
-              navigation.navigate("DrawerNavigator", { screen: "Trips" })
-            }
-          >
-            <Text style={styles.drawerItemLabel}>Your Trips</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.drawerItem}
-            onPress={() =>
-              navigation.navigate("DrawerNavigator", { screen: "Payment" })
-            }
-          >
-            <Text style={styles.drawerItemLabel}>Payment</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.drawerItem}
-            onPress={() =>
-              navigation.navigate("DrawerNavigator", { screen: "AngkotinPass" })
-            }
-          >
-            <Text style={styles.drawerItemLabel}>Angkotin Pass</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.drawerItem}
-            onPress={() =>
-              navigation.navigate("DrawerNavigator", {
-                screen: "AccountSettings",
-              })
-            }
-          >
-            <Text style={styles.drawerItemLabel}>Settings</Text>
-          </TouchableOpacity>
+                <FontAwesome name="chevron-right" size={16} color="white" />
+              </View>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.drawerSection}>
+            <TouchableOpacity
+              style={styles.drawerItem}
+              onPress={() =>
+                navigation.navigate("DrawerNavigator", { screen: "Trips" })
+              }
+            >
+              <Text style={styles.drawerItemLabel}>Your Trips</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.drawerItem}
+              onPress={() =>
+                navigation.navigate("DrawerNavigator", { screen: "Payment" })
+              }
+            >
+              <Text style={styles.drawerItemLabel}>Payment</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.drawerItem}
+              onPress={() =>
+                navigation.navigate("DrawerNavigator", { screen: "AngkotinPass" })
+              }
+            >
+              <Text style={styles.drawerItemLabel}>Angkotin Pass</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.drawerItem}
+              onPress={() =>
+                navigation.navigate("DrawerNavigator", {
+                  screen: "AccountSettings",
+                })
+              }
+            >
+              <Text style={styles.drawerItemLabel}>Settings</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.footerSection}>
+            <Text style={styles.legal}>Legal</Text>
+            <Text style={styles.version}>v4.3712003</Text>
+          </View>
         </View>
-        <View style={styles.footerSection}>
-          <Text style={styles.legal}>Legal</Text>
-          <Text style={styles.version}>v4.3712003</Text>
-        </View>
-      </View>
-    </Animated.View>
-  );
+      </Animated.View>
+    );
+  }
 };
 
 const styles = StyleSheet.create({

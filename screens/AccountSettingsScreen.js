@@ -20,6 +20,7 @@ export default function AccountSettingsScreen({ navigation }) {
   });
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleModalClose = () => {
     setModalVisible(false);
@@ -37,6 +38,9 @@ export default function AccountSettingsScreen({ navigation }) {
             phoneNumber: parsedUser.phoneNumber,
           });
         }
+        console.log(user);
+        setIsLoading(false);
+        console.log("is loading: ", isLoading);
       } catch (err) {
         console.log(err);
       }
@@ -60,101 +64,101 @@ export default function AccountSettingsScreen({ navigation }) {
     try {
       await signOut(auth);
       console.log("User signed out!");
+      await AsyncStorage.setItem("currentUser", JSON.stringify({}));
       navigation.navigate("login1"); // Navigate back to the login screen
     } catch (error) {
       console.error("Error signing out:", error);
     }
   };
-
-  return (
-    <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <FontAwesome name="arrow-left" size={24} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Account Settings</Text>
-      </View>
-      <View style={styles.profileContainer}>
-        {/* Picture Profile */}
-        <FontAwesome name="user-circle" size={48} color="black" />
-        <View className="flex flex-col ml-4">
-          <Text style={styles.profileName}>
-            {/* {user.firstName} {user.lastName} */}
-            Undefined Undefined
-          </Text>
-          <Text style={styles.profilePhone}>
-            {/* {user.phoneNumber} */}
-            08xx
-          </Text>
+  if (!isLoading) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.headerContainer}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <FontAwesome name="arrow-left" size={24} color="black" />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Account Settings</Text>
         </View>
-      </View>
-      <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>Favorites</Text>
-        <TouchableOpacity
-          style={styles.sectionItem}
-          onPress={() => setModalVisible(true)}
-        >
-          <FontAwesome name="home" size={24} color="black" />
-          <Text style={styles.sectionText}>Add Home</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.sectionItem}
-          onPress={() => setModalVisible(true)}
-        >
-          <FontAwesome name="briefcase" size={24} color="black" />
-          <Text style={styles.sectionText}>Add Work</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.sectionLink}
-          onPress={() => setModalVisible(true)}
-        >
-          <Text style={styles.sectionLinkText}>More Saved Places</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.sectionLink}
-          onPress={() => setModalVisible(true)}
-        >
-          <Text style={styles.sectionLinkText}>Privacy</Text>
-        </TouchableOpacity>
-        <Text>Manage the data you share with us</Text>
-        <TouchableOpacity
-          style={styles.sectionLink}
-          onPress={() => setModalVisible(true)}
-        >
-          <Text style={styles.sectionLinkText}>Security</Text>
-          <Text>Control your account security with 2-step verification</Text>
-        </TouchableOpacity>
-      </View>
-      <TouchableOpacity style={styles.signOutButton} onPress={handleSignOut}>
-        <Text style={styles.signOutText}>Sign Out</Text>
-      </TouchableOpacity>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={handleModalClose}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Coming Soon</Text>
-            <Text style={styles.modalDescription}>
-              We're still building this feature.
+        <View style={styles.profileContainer}>
+          {/* Picture Profile */}
+          <FontAwesome name="user-circle" size={48} color="black" />
+          <View className="flex flex-col ml-4">
+            <Text style={styles.profileName}>
+              {user.firstName} {user.lastName}
             </Text>
-            <Text style={styles.modalDescription}>
-              This feature is currently under construction, but feel free to
-              check it later. We'll have it complete really soon!
+            <Text style={styles.profilePhone}>
+              {user.phoneNumber}
             </Text>
-            <TouchableOpacity
-              style={styles.modalButton}
-              onPress={handleModalClose}
-            >
-              <Text style={styles.modalButtonText}>Got it</Text>
-            </TouchableOpacity>
           </View>
         </View>
-      </Modal>
-    </View>
-  );
+        <View style={styles.sectionContainer}>
+          <Text style={styles.sectionTitle}>Favorites</Text>
+          <TouchableOpacity
+            style={styles.sectionItem}
+            onPress={() => setModalVisible(true)}
+          >
+            <FontAwesome name="home" size={24} color="black" />
+            <Text style={styles.sectionText}>Add Home</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.sectionItem}
+            onPress={() => setModalVisible(true)}
+          >
+            <FontAwesome name="briefcase" size={24} color="black" />
+            <Text style={styles.sectionText}>Add Work</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.sectionLink}
+            onPress={() => setModalVisible(true)}
+          >
+            <Text style={styles.sectionLinkText}>More Saved Places</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.sectionLink}
+            onPress={() => setModalVisible(true)}
+          >
+            <Text style={styles.sectionLinkText}>Privacy</Text>
+          </TouchableOpacity>
+          <Text>Manage the data you share with us</Text>
+          <TouchableOpacity
+            style={styles.sectionLink}
+            onPress={() => setModalVisible(true)}
+          >
+            <Text style={styles.sectionLinkText}>Security</Text>
+            <Text>Control your account security with 2-step verification</Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity style={styles.signOutButton} onPress={handleSignOut}>
+          <Text style={styles.signOutText}>Sign Out</Text>
+        </TouchableOpacity>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={handleModalClose}
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>Coming Soon</Text>
+              <Text style={styles.modalDescription}>
+                We're still building this feature.
+              </Text>
+              <Text style={styles.modalDescription}>
+                This feature is currently under construction, but feel free to
+                check it later. We'll have it complete really soon!
+              </Text>
+              <TouchableOpacity
+                style={styles.modalButton}
+                onPress={handleModalClose}
+              >
+                <Text style={styles.modalButtonText}>Got it</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
