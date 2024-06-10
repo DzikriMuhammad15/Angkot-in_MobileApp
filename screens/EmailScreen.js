@@ -31,6 +31,11 @@ export default function EmailScreen({ navigation }) {
         }
     }, [navigationTrigger]);
 
+    function isValidEmail(email) {
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailPattern.test(email);
+    }
+
     const inputCheck = async () => {
         // todo ambil dulu dari db dan cek apakah ada email yang sama
         const q = query(usersRef, where("email", "==", email));
@@ -38,6 +43,10 @@ export default function EmailScreen({ navigation }) {
         if (!querySnapshot.empty) {
             // todo jika ada, set email error, return false
             setError("Email has already taken");
+            return false;
+        }
+        if (!isValidEmail(email)) {
+            setError("Please enter a valid email");
             return false;
         }
         else {
